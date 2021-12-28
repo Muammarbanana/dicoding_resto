@@ -7,8 +7,9 @@ import 'package:flutter_resto_dicoding/presentation/pages/resto_search.dart';
 import 'package:flutter_resto_dicoding/presentation/widgets/resto_card.dart';
 import 'package:provider/provider.dart';
 
-// ignore: use_key_in_widget_constructors
 class RestoList extends StatelessWidget {
+  const RestoList({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

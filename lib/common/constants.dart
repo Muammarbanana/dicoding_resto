@@ -9,3 +9,5 @@ final TextStyle kHeading1 =
 final TextStyle kHeading2 =
     GoogleFonts.lato(fontSize: 16, fontWeight: FontWeight.bold);
 final TextStyle kBody1 = GoogleFonts.lato(fontSize: 12);
+
+enum ResultState { loading, hasData, noData, error }

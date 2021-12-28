@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_resto_dicoding/common/constants.dart';
 import 'package:flutter_resto_dicoding/data/api/api_service.dart';
 import 'package:flutter_resto_dicoding/data/models/resto_detail_model.dart';
-
-enum ResultState { loading, hasData, noData, error }
 
 class RestoDetailProvider extends ChangeNotifier {
   final ApiService apiService;

@@ -5,12 +5,13 @@ class SearchBar extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
   final Function(String) onChanged;
-  // ignore: use_key_in_widget_constructors
+
   const SearchBar({
+    Key? key,
     required this.controller,
     required this.hintText,
     required this.onChanged,
-  });
+  }) : super(key: key);
 
   @override
   _SearchBarState createState() => _SearchBarState();

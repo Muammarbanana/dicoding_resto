@@ -8,14 +8,14 @@ class RestoCard extends StatelessWidget {
   final String city;
   final double rating;
 
-  // ignore: use_key_in_widget_constructors
   const RestoCard({
+    Key? key,
     required this.name,
     required this.description,
     required this.pictureId,
     required this.city,
     required this.rating,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -10,11 +10,11 @@ class RestoDetail extends StatelessWidget {
   final String title;
   final String restoId;
 
-  // ignore: use_key_in_widget_constructors
   const RestoDetail({
+    Key? key,
     required this.title,
     required this.restoId,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

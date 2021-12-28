@@ -4,10 +4,10 @@ import 'package:flutter_resto_dicoding/common/constants.dart';
 class MenuCard extends StatelessWidget {
   final String name;
 
-  // ignore: use_key_in_widget_constructors
   const MenuCard({
+    Key? key,
     required this.name,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
