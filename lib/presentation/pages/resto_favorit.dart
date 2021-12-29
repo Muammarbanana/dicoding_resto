@@ -53,6 +53,7 @@ class RestoFavorit extends StatelessWidget {
                 create: (_) => DbProvider(),
                 child: Consumer<DbProvider>(
                   builder: (context, state, _) {
+                    state.getAllRestaurants();
                     return ListView.builder(
                       shrinkWrap: true,
                       itemCount: state.restaurant.length,

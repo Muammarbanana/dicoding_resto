@@ -1,22 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_resto_dicoding/common/constants.dart';
 import 'package:flutter_resto_dicoding/data/api/api_service.dart';
-import 'package:flutter_resto_dicoding/data/models/resto_detail_model.dart';
+import 'package:flutter_resto_dicoding/data/localdbhelper/database_helper.dart';
+import 'package:flutter_resto_dicoding/data/models/resto_detail_model.dart'
+    as rdm;
 
 class RestoDetailProvider extends ChangeNotifier {
   final ApiService apiService;
   final String restoId;
+  late DatabaseHelper _dbHelper;
 
   RestoDetailProvider({required this.apiService, required this.restoId}) {
+    _dbHelper = DatabaseHelper();
     _fetchRestoDetail(restoId);
+    checkFavourite(restoId);
   }
 
-  late RestoDetailModel _restoDetail;
+  late rdm.RestoDetailModel _restoDetail;
   late ResultState _state;
-  bool isFavorited = false;
+  late bool isFavorited = false;
   String _message = '';
 
-  RestoDetailModel get result => _restoDetail;
+  rdm.RestoDetailModel get result => _restoDetail;
   ResultState get state => _state;
   String get message => _message;
 
@@ -38,6 +43,17 @@ class RestoDetailProvider extends ChangeNotifier {
       _state = ResultState.error;
       notifyListeners();
       return _message = '$e';
+    }
+  }
+
+  Future<void> checkFavourite(String restoId) async {
+    final resto = await _dbHelper.getRestaurantById(restoId);
+    if (resto is rdm.Restaurant) {
+      isFavorited == true;
+      notifyListeners();
+    } else {
+      isFavorited == false;
+      notifyListeners();
     }
   }
 }

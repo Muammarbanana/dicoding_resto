@@ -53,18 +53,21 @@ class DatabaseHelper {
     return results.map((res) => Restaurant.fromMap(res)).toList();
   }
 
-  Future<Restaurant> getRestaurantById(int id) async {
+  Future<dynamic> getRestaurantById(String id) async {
     final Database db = await database;
     List<Map<String, dynamic>> results = await db.query(
       _tableName,
       where: 'id = ?',
       whereArgs: [id],
     );
-
-    return results.map((res) => Restaurant.fromMap(res)).first;
+    if (results.isNotEmpty) {
+      return results.map((res) => Restaurant.fromMap(res)).first;
+    } else {
+      return null;
+    }
   }
 
-  Future<void> deleteRestaurant(int id) async {
+  Future<void> deleteRestaurant(String id) async {
     final db = await database;
 
     await db.delete(

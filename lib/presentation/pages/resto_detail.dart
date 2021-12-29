@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_resto_dicoding/common/constants.dart';
 import 'package:flutter_resto_dicoding/data/api/api_service.dart';
@@ -17,6 +19,14 @@ class RestoDetail extends StatelessWidget {
     required this.title,
     required this.restoId,
   }) : super(key: key);
+
+  void showMessage(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +48,7 @@ class RestoDetail extends StatelessWidget {
               create: (_) => RestoDetailProvider(
                   apiService: ApiService(), restoId: restoId),
             ),
-            Provider<DbProvider>(
+            ChangeNotifierProvider<DbProvider>(
               create: (_) => DbProvider(),
             ),
           ],
@@ -54,46 +64,106 @@ class RestoDetail extends StatelessWidget {
                   children: [
                     Stack(
                       children: [
-                        Hero(
-                          tag: state.result.restaurant.pictureId,
-                          child: Image.network(
-                            'https://restaurant-api.dicoding.dev/images/large/' +
-                                state.result.restaurant.pictureId,
-                            height: 300,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 30),
+                          child: Hero(
+                            tag: state.result.restaurant.pictureId,
+                            child: Image.network(
+                              'https://restaurant-api.dicoding.dev/images/large/' +
+                                  state.result.restaurant.pictureId,
+                              height: 300,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                         Positioned(
-                          bottom: -25,
+                          bottom: 0,
                           right: 20,
-                          child: GestureDetector(
-                            onTap: () {
-                              final Restaurant restaurant = Restaurant(
-                                  id: state.result.restaurant.id,
-                                  name: state.result.restaurant.name,
-                                  description:
-                                      state.result.restaurant.description,
-                                  pictureId: state.result.restaurant.pictureId,
-                                  city: state.result.restaurant.city,
-                                  rating: state.result.restaurant.rating);
-                              Provider.of<DbProvider>(context, listen: false)
-                                  .addRestaurant(restaurant);
-                              state.isFavorited = true;
-                            },
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(35),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ImageIcon(
-                                  const AssetImage("assets/icons/heart.png"),
-                                  color: (state.isFavorited)
-                                      ? Colors.red
-                                      : Colors.grey,
+                          child: Consumer<DbProvider>(
+                            builder: (context, provider, child) {
+                              return GestureDetector(
+                                onTap: () async {
+                                  final favoritedRestaurant = await provider
+                                      .getRestaurantById(state.restoId);
+                                  if (favoritedRestaurant is String) {
+                                    if (favoritedRestaurant == 'Data Kosong') {
+                                      final Restaurant restaurant = Restaurant(
+                                          id: state.result.restaurant.id,
+                                          name: state.result.restaurant.name,
+                                          description: state
+                                              .result.restaurant.description,
+                                          pictureId:
+                                              state.result.restaurant.pictureId,
+                                          city: state.result.restaurant.city,
+                                          rating:
+                                              state.result.restaurant.rating);
+                                      showMessage(context,
+                                          'Restoran ditambahkan ke daftar favorit');
+                                      provider.addRestaurant(restaurant);
+                                      state.isFavorited = true;
+                                    } else {
+                                      showMessage(context, favoritedRestaurant);
+                                    }
+                                  } else {
+                                    provider.deleteRestaurant(state.restoId);
+                                    showMessage(context,
+                                        'Restoran dihapus dari daftar favorit');
+                                    state.isFavorited = false;
+                                  }
+                                },
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(35),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: ImageIcon(
+                                      const AssetImage(
+                                          "assets/icons/heart.png"),
+                                      color: (state.isFavorited)
+                                          ? Colors.red
+                                          : Colors.grey,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              );
+                            },
+                          ),
+                        ),
+                        Positioned(
+                          bottom: -50,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  state.result.restaurant.name,
+                                  style: kHeading1,
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    const SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: ImageIcon(
+                                        AssetImage(
+                                            'assets/icons/map-marker.png'),
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      state.result.restaurant.city,
+                                      style: kBody1,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         )
@@ -105,31 +175,7 @@ class RestoDetail extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            state.result.restaurant.name,
-                            style: kHeading1,
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: ImageIcon(
-                                  AssetImage('assets/icons/map-marker.png'),
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                state.result.restaurant.city,
-                                style: kBody1,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 32),
                           Text(
                             "Deskripsi",
                             style: kHeading2,

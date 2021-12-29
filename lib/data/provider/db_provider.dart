@@ -23,11 +23,20 @@ class DbProvider extends ChangeNotifier {
     getAllRestaurants();
   }
 
-  Future<Restaurant> getRestaurantById(int id) async {
-    return await _dbHelper.getRestaurantById(id);
+  Future<dynamic> getRestaurantById(String id) async {
+    try {
+      final resto = await _dbHelper.getRestaurantById(id);
+      if (resto == null) {
+        return 'Data Kosong';
+      } else {
+        return resto;
+      }
+    } catch (e) {
+      return 'Error $e';
+    }
   }
 
-  void deleteRestaurant(int id) async {
+  void deleteRestaurant(String id) async {
     await _dbHelper.deleteRestaurant(id);
     getAllRestaurants();
   }
