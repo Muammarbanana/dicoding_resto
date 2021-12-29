@@ -54,25 +54,42 @@ class RestoFavorit extends StatelessWidget {
                 create: (_) => DbProvider(),
                 child: Consumer<DbProvider>(
                   builder: (context, state, _) {
-                    state.getAllRestaurants();
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: state.restaurant.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigation.intentWithData(RestoDetail.routeName,
-                                state.restaurant[index].id);
-                          },
-                          child: RestoCard(
-                              name: state.restaurant[index].name,
-                              description: state.restaurant[index].description,
-                              pictureId: state.restaurant[index].pictureId,
-                              city: state.restaurant[index].city,
-                              rating: state.restaurant[index].rating),
-                        );
-                      },
-                    );
+                    if (state.state == ResultState.loading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (state.state == ResultState.noData) {
+                      return Center(
+                        child: Text(
+                          'Belum ada restoran yang kamu favoritkan',
+                          style: kBody1,
+                        ),
+                      );
+                    } else if (state.state == ResultState.hasData) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: state.restaurant.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigation.intentWithData(RestoDetail.routeName,
+                                  state.restaurant[index].id);
+                            },
+                            child: RestoCard(
+                                name: state.restaurant[index].name,
+                                description:
+                                    state.restaurant[index].description,
+                                pictureId: state.restaurant[index].pictureId,
+                                city: state.restaurant[index].city,
+                                rating: state.restaurant[index].rating),
+                          );
+                        },
+                      );
+                    } else {
+                      return const Center(
+                        child: Text('Terjadi kesalahan'),
+                      );
+                    }
                   },
                 ),
               ),

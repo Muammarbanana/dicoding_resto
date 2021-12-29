@@ -15,7 +15,6 @@ class Pengaturan extends StatefulWidget {
 class _PengaturanState extends State<Pengaturan> {
   @override
   Widget build(BuildContext context) {
-    bool isSwitched = false;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimary,

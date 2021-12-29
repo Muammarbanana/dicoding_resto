@@ -99,9 +99,9 @@ class RestoDetail extends StatelessWidget {
                                       showMessage(context, favoritedRestaurant);
                                     }
                                   } else {
-                                    provider.deleteRestaurant(state.restoId);
                                     showMessage(context,
                                         'Restoran dihapus dari daftar favorit');
+                                    provider.deleteRestaurant(state.restoId);
                                     state.isFavorited = false;
                                   }
                                 },

@@ -18,7 +18,7 @@ class RestoDetailProvider extends ChangeNotifier {
 
   late rdm.RestoDetailModel _restoDetail;
   late ResultState _state;
-  late bool isFavorited = false;
+  late bool isFavorited;
   String _message = '';
 
   rdm.RestoDetailModel get result => _restoDetail;
@@ -48,11 +48,11 @@ class RestoDetailProvider extends ChangeNotifier {
 
   Future<void> checkFavourite(String restoId) async {
     final resto = await _dbHelper.getRestaurantById(restoId);
-    if (resto is rdm.Restaurant) {
-      isFavorited == true;
+    if (resto != null) {
+      isFavorited = true;
       notifyListeners();
     } else {
-      isFavorited == false;
+      isFavorited = false;
       notifyListeners();
     }
   }
