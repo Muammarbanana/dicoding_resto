@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_resto_dicoding/presentation/pages/resto_list.dart';
+import 'package:flutter_resto_dicoding/presentation/pages/homepage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const RestoList(),
+      home: const HomePage(),
     );
   }
 }
