@@ -28,6 +28,25 @@ class RestoFavorit extends StatelessWidget {
           )
         ],
       ),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Restoran Favoritmu",
+              style: kHeading2,
+            ),
+            Text(
+              "Ini daftar restoran yang kamu favoritkan!",
+              style: kBody1,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
