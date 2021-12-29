@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_resto_dicoding/common/constants.dart';
 import 'package:flutter_resto_dicoding/data/api/api_service.dart';
