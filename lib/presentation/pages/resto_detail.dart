@@ -43,15 +43,36 @@ class RestoDetail extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Hero(
-                      tag: state.result.restaurant.pictureId,
-                      child: Image.network(
-                        'https://restaurant-api.dicoding.dev/images/large/' +
-                            state.result.restaurant.pictureId,
-                        height: 300,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
+                    Stack(
+                      children: [
+                        Hero(
+                          tag: state.result.restaurant.pictureId,
+                          child: Image.network(
+                            'https://restaurant-api.dicoding.dev/images/large/' +
+                                state.result.restaurant.pictureId,
+                            height: 300,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Positioned(
+                          bottom: -25,
+                          right: 20,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(35),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: ImageIcon(
+                                AssetImage("assets/icons/heart.png"),
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                      clipBehavior: Clip.none,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
