@@ -3,7 +3,6 @@ import 'package:flutter_resto_dicoding/common/constants.dart';
 import 'package:flutter_resto_dicoding/presentation/pages/pengaturan.dart';
 import 'package:flutter_resto_dicoding/presentation/pages/resto_favorit.dart';
 import 'package:flutter_resto_dicoding/presentation/pages/resto_list.dart';
-import 'package:flutter_resto_dicoding/presentation/pages/resto_search.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

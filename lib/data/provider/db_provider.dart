@@ -10,6 +10,7 @@ class DbProvider extends ChangeNotifier {
 
   DbProvider() {
     _dbHelper = DatabaseHelper();
+    getAllRestaurants();
   }
 
   void getAllRestaurants() async {

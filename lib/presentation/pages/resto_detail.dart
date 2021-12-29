@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_resto_dicoding/common/constants.dart';
 import 'package:flutter_resto_dicoding/data/api/api_service.dart';
+import 'package:flutter_resto_dicoding/data/models/resto_model.dart';
+import 'package:flutter_resto_dicoding/data/provider/db_provider.dart';
 import 'package:flutter_resto_dicoding/data/provider/resto_detail_provider.dart';
 import 'package:flutter_resto_dicoding/presentation/widgets/menu_card.dart';
 import 'package:flutter_resto_dicoding/presentation/widgets/review_card.dart';
@@ -30,9 +32,16 @@ class RestoDetail extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: ChangeNotifierProvider<RestoDetailProvider>(
-          create: (_) =>
-              RestoDetailProvider(apiService: ApiService(), restoId: restoId),
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider<RestoDetailProvider>(
+              create: (_) => RestoDetailProvider(
+                  apiService: ApiService(), restoId: restoId),
+            ),
+            Provider<DbProvider>(
+              create: (_) => DbProvider(),
+            ),
+          ],
           child: Consumer<RestoDetailProvider>(
             builder: (context, state, _) {
               if (state.state == ResultState.loading) {
@@ -58,15 +67,32 @@ class RestoDetail extends StatelessWidget {
                         Positioned(
                           bottom: -25,
                           right: 20,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(35),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: ImageIcon(
-                                AssetImage("assets/icons/heart.png"),
-                                color: Colors.grey,
+                          child: GestureDetector(
+                            onTap: () {
+                              final Restaurant restaurant = Restaurant(
+                                  id: state.result.restaurant.id,
+                                  name: state.result.restaurant.name,
+                                  description:
+                                      state.result.restaurant.description,
+                                  pictureId: state.result.restaurant.pictureId,
+                                  city: state.result.restaurant.city,
+                                  rating: state.result.restaurant.rating);
+                              Provider.of<DbProvider>(context, listen: false)
+                                  .addRestaurant(restaurant);
+                              state.isFavorited = true;
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(35),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ImageIcon(
+                                  const AssetImage("assets/icons/heart.png"),
+                                  color: (state.isFavorited)
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
                               ),
                             ),
                           ),

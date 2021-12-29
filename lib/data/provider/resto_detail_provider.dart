@@ -13,6 +13,7 @@ class RestoDetailProvider extends ChangeNotifier {
 
   late RestoDetailModel _restoDetail;
   late ResultState _state;
+  bool isFavorited = false;
   String _message = '';
 
   RestoDetailModel get result => _restoDetail;

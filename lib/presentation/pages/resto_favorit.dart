@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_resto_dicoding/common/constants.dart';
+import 'package:flutter_resto_dicoding/data/provider/db_provider.dart';
+import 'package:flutter_resto_dicoding/presentation/pages/resto_detail.dart';
 import 'package:flutter_resto_dicoding/presentation/pages/resto_search.dart';
+import 'package:flutter_resto_dicoding/presentation/widgets/resto_card.dart';
+import 'package:provider/provider.dart';
 
 class RestoFavorit extends StatelessWidget {
   const RestoFavorit({Key? key}) : super(key: key);
@@ -43,6 +47,38 @@ class RestoFavorit extends StatelessWidget {
             ),
             const SizedBox(
               height: 20,
+            ),
+            Expanded(
+              child: ChangeNotifierProvider<DbProvider>(
+                create: (_) => DbProvider(),
+                child: Consumer<DbProvider>(
+                  builder: (context, state, _) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.restaurant.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RestoDetail(
+                                      title: state.restaurant[index].name,
+                                      restoId: state.restaurant[index].id)),
+                            );
+                          },
+                          child: RestoCard(
+                              name: state.restaurant[index].name,
+                              description: state.restaurant[index].description,
+                              pictureId: state.restaurant[index].pictureId,
+                              city: state.restaurant[index].city,
+                              rating: state.restaurant[index].rating),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
             ),
           ],
         ),
