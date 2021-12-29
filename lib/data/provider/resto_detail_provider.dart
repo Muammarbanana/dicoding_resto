@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_resto_dicoding/common/constants.dart';
 import 'package:flutter_resto_dicoding/data/api/api_service.dart';
-import 'package:flutter_resto_dicoding/data/localdbhelper/database_helper.dart';
+import 'package:flutter_resto_dicoding/data/helper/database_helper.dart';
 import 'package:flutter_resto_dicoding/data/models/resto_detail_model.dart'
     as rdm;
 

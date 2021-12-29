@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_resto_dicoding/common/constants.dart';
+import 'package:flutter_resto_dicoding/data/provider/scheduling_provider.dart';
 import 'package:flutter_resto_dicoding/presentation/pages/resto_search.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Pengaturan extends StatefulWidget {
   const Pengaturan({Key? key}) : super(key: key);
@@ -56,15 +59,24 @@ class _PengaturanState extends State<Pengaturan> {
                 )
               ],
             ),
-            Switch(
-              value: isSwitched,
-              onChanged: (value) {
-                setState(() {
-                  isSwitched = value;
-                });
+            Consumer<SchedulingProvider>(
+              builder: (context, scheduled, _) {
+                if (scheduled.isScheduled != null) {
+                  return Switch.adaptive(
+                    value: scheduled.isScheduled!,
+                    onChanged: (value) async {
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setBool('switchValue', value);
+                      scheduled.scheduledRestaurant(value);
+                    },
+                    activeTrackColor: Colors.lightGreenAccent,
+                    activeColor: Colors.green,
+                  );
+                } else {
+                  return Container();
+                }
               },
-              activeTrackColor: Colors.lightGreenAccent,
-              activeColor: Colors.green,
             ),
           ],
         ),

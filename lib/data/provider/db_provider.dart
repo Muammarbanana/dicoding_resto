@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_resto_dicoding/data/localdbhelper/database_helper.dart';
+import 'package:flutter_resto_dicoding/data/helper/database_helper.dart';
 import 'package:flutter_resto_dicoding/data/models/resto_model.dart';
 
 class DbProvider extends ChangeNotifier {

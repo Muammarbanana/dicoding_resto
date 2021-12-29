@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_resto_dicoding/common/constants.dart';
+import 'package:flutter_resto_dicoding/common/navigation.dart';
 import 'package:flutter_resto_dicoding/data/provider/db_provider.dart';
 import 'package:flutter_resto_dicoding/presentation/pages/resto_detail.dart';
 import 'package:flutter_resto_dicoding/presentation/pages/resto_search.dart';
@@ -60,13 +61,8 @@ class RestoFavorit extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RestoDetail(
-                                      title: state.restaurant[index].name,
-                                      restoId: state.restaurant[index].id)),
-                            );
+                            Navigation.intentWithData(RestoDetail.routeName,
+                                state.restaurant[index].id);
                           },
                           child: RestoCard(
                               name: state.restaurant[index].name,

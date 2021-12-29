@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_resto_dicoding/common/constants.dart';
+import 'package:flutter_resto_dicoding/data/helper/notification_helper.dart';
+import 'package:flutter_resto_dicoding/data/provider/scheduling_provider.dart';
 import 'package:flutter_resto_dicoding/presentation/pages/pengaturan.dart';
+import 'package:flutter_resto_dicoding/presentation/pages/resto_detail.dart';
 import 'package:flutter_resto_dicoding/presentation/pages/resto_favorit.dart';
 import 'package:flutter_resto_dicoding/presentation/pages/resto_list.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,17 +16,34 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final NotificationHelper _notificationHelper = NotificationHelper();
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    RestoList(),
-    RestoFavorit(),
-    Pengaturan(),
+  static final List<Widget> _widgetOptions = <Widget>[
+    const RestoList(),
+    const RestoFavorit(),
+    ChangeNotifierProvider<SchedulingProvider>(
+      create: (_) => SchedulingProvider(),
+      child: const Pengaturan(),
+    ),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationHelper
+        .configureSelectNotificationSubject(RestoDetail.routeName);
+  }
+
+  @override
+  void dispose() {
+    selectNotificationSubject.close();
+    super.dispose();
   }
 
   @override

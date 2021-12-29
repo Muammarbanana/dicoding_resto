@@ -9,12 +9,11 @@ import 'package:flutter_resto_dicoding/presentation/widgets/review_card.dart';
 import 'package:provider/provider.dart';
 
 class RestoDetail extends StatelessWidget {
-  final String title;
   final String restoId;
+  static const routeName = '/resto_detail';
 
   const RestoDetail({
     Key? key,
-    required this.title,
     required this.restoId,
   }) : super(key: key);
 
@@ -33,10 +32,6 @@ class RestoDetail extends StatelessWidget {
         backgroundColor: kPrimary,
         iconTheme: const IconThemeData(
           color: Colors.black,
-        ),
-        title: Text(
-          title,
-          style: kHeading1.copyWith(color: Colors.black),
         ),
       ),
       body: SingleChildScrollView(
